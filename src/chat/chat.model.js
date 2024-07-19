@@ -1,0 +1,22 @@
+import mongoose, { Schema } from 'mongoose';
+
+const ChatSchema = new Schema({
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, "Enter a valid idUser"]
+    },
+    receptor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, "Enter a valid idUser"]
+    }
+});
+
+ChatSchema.methods.toJSON = function () {
+    const { __v, _id, ...chat } = this.toObject();
+    chat.chatId = _id;
+    return chat;
+};
+
+export const Chat = mongoose.model('Chat', ChatSchema);
