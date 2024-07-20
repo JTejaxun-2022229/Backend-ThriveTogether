@@ -1,4 +1,4 @@
-import Forum from '../forum/forum.controller.js';
+import Forum from '../forum/forum.model.js';
 
 export const existeForo = async (foro = '') => {
     
@@ -8,13 +8,4 @@ export const existeForo = async (foro = '') => {
         throw new Error(`The forum ${foro} exist`);
     }
     
-}
-
-export const existeEmail = async (email = '') => {
-
-    const existeEmail = await User.findOne({ email });
-
-    if (existeEmail) {
-        throw new Error(`The email ${email} exist`);
-    }
 }
