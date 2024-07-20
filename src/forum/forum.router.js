@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from 'express-validator'
-import { createForum, postMessage, deleteForum, deleteComment } from './forum.controller.js'
+import { createForum, postMessage, deleteForum, deleteComment, getForums, getComentaryById, updateForum } from './forum.controller.js'
 
 const router = Router();
 
@@ -13,6 +13,16 @@ router.post(
     ], createForum
 )
 
+router.get(
+    '/',[],getForums
+)
+
+router.get(
+    '/:forumId/comments/:commentId',
+    [],
+    getComentaryById
+);
+
 router.put(
     '/addMessage',
     [
@@ -21,6 +31,14 @@ router.put(
         check('text', 'The text is requiredio').not().isEmpty(),
     ],
     postMessage
+);
+
+router.put('/:forumId', 
+    [
+        check('title', 'The title is required').not().isEmpty(),
+        check('type', 'The type is required').not().isEmpty(),
+    ],
+    updateForum
 );
 
 router.delete(

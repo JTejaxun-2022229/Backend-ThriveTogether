@@ -46,15 +46,85 @@ export const postMessage = async (req, res ) =>{
 
 export const getForums = async (req, res) => {
     try {
-        const forum = await Forum.find();
+
+        const forum = await Forum.find({status:true});
         res.status(200).json(forum);
+
     } catch (error) {
+
         res.status(500).json({ message: 'Error listing forums', error });
+
     }
 };
 
+export const getComentaryById = async ( req, res ) => {
+
+    const { forumId, commentId } = req.params;
+
+    try{
+
+        const forum = await Forum.findById(forumId);
+
+        if (!forum) {
+            return res.status(404).json({ msg: 'Forum not found' });
+        }
+
+        const comment = forum.comentaries.find(comment => comment._id.toString() === commentId && comment.status === true);
+
+        if (!comment) {
+            return res.status(404).json({ msg: 'Message not found or it has been deleted' });
+        }
+
+        res.status(200).json({
+            comment
+        });
+
+    }catch(error){
+
+        res.status(500).json({
+            msg: 'Error retrieving comment', error
+        })
+    }
+
+}
+
+export const updateForum = async ( req, res ) => {
+    const { forumId } = req.params;
+    const { title, type } = req.body;
+
+    console.log('putForum')
+
+    try{
+        const forum = await Forum.findById(forumId);
+        if (!forum) {
+            return res.status(404).json({ msg: 'Forum not found' });
+        }
+
+        forum.title = title || forum.title;
+        forum.type = type || forum.type;
+
+        await forum.save();
+
+        res.status(200).json({
+            msg: 'Forum updated successfully',
+            forum
+        });
+
+    }catch(error){
+
+        res.status(500).json({
+            msg: 'Error updating forum',
+            error
+        });
+
+    }
+
+}
+
 export const deleteForum = async (req, res) => {
+
     try {
+
         const { id } = req.params;
         const forum = await Forum.findOne({ _id: id });
 
@@ -74,16 +144,19 @@ export const deleteForum = async (req, res) => {
         });
 
     } catch (error) {
+
         console.error('Error updating forum:', error);
         res.status(500).json({
             msg: 'Error updating forum'
         });
+
     }
 }
 
 export const deleteComment = async (req, res) => {
     const { forumId, commentId } = req.params;
     try {
+
         const forum = await Forum.findById(forumId);
         if (!forum) {
             return res.status(404).json({ msg: 'Forum not found' });
@@ -95,7 +168,7 @@ export const deleteComment = async (req, res) => {
         }
 
         forum.comentaries[commentIndex].status = false;
-        
+
         await forum.save();
 
         res.status(200).json({ msg: 'Comment successfully deleted' });
