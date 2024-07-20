@@ -9,6 +9,10 @@ const ForumSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    status:{
+        type: Boolean,
+        default: true
+    },
     comentaries: [{
         _id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -25,14 +29,14 @@ const ForumSchema = new mongoose.Schema({
         fecha: {
             type: Date,
             default: Date.now,
+        },
+        status: {
+            type: Boolean,
+            default:true
         }
     }]
 }, {
-    timestamps: true,
-    status:{
-        type: Boolean,
-        default: true
-    }
+    timestamps: true
 });
 
 export default mongoose.model('Forum', ForumSchema);

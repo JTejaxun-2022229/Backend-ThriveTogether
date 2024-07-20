@@ -1,6 +1,6 @@
-import { Router, Router } from "express";
+import { Router } from "express";
 import { check } from 'express-validator'
-import { createForum, postMessage, deleteForum } from './forum.controller.js'
+import { createForum, postMessage, deleteForum, deleteComment } from './forum.controller.js'
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.post(
 )
 
 router.put(
-    '/',
+    '/addMessage',
     [
         check('title', 'The title indicates where the comment belongs.').not().isEmpty(),
         check('user', 'The title indicates who wrote the comment.').not().isEmpty(),

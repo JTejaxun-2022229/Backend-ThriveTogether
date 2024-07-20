@@ -1,4 +1,5 @@
-import { respons, request } from "express";
+import { response, request } from "express";
+import mongoose from 'mongoose';
 import Forum from './forum.model.js';
 
 export const createForum = async (req, res) => {
@@ -26,14 +27,20 @@ export const postMessage = async (req, res ) =>{
             msg: "This forum does not exist in the database"
         });
     }
-    forum.user=user;
-    forum.text=text
 
-    const f = await Forum.findByIdAndUpdate(forum.id, forum);
+    const newComment = {
+        user: user,
+        text: text,
+        fecha: new Date()
+    };
+
+    forum.comentaries.push(newComment);
+
+    await forum.save();
 
     res.status(200).json({
         msg: "the forum has received new comments",
-        f
+        forum
     });
 }
 
@@ -87,9 +94,10 @@ export const deleteComment = async (req, res) => {
             return res.status(404).json({ msg: 'Comment not found' });
         }
 
-        forum.comentaries.splice(commentIndex, 1);
-        await forum.save();
+        forum.comentaries[commentIndex].status = false;
         
+        await forum.save();
+
         res.status(200).json({ msg: 'Comment successfully deleted' });
     } catch (error) {
         res.status(500).json({ msg: 'Error deleting this comment', error });
