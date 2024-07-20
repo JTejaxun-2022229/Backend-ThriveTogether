@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 const appointmentSchema = new mongoose.Schema({
 
     idPatient: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+        //ref: 'User',
         required: true,
     },
 
     idPhycologist: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+       // ref: 'User',
         required: true,
     },
 
@@ -23,7 +23,7 @@ const appointmentSchema = new mongoose.Schema({
         type: String,
     },
 
-    status: { 
+    status: {
         type: Boolean,
         default: true,
     },

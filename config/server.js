@@ -1,16 +1,19 @@
 'use strict'
 
 import express from 'express'
-import cors from 'cors'
 import helmet from 'helmet'
+import cors from 'cors'
 import morgan from 'morgan'
 import { dbConnection } from './mongo.js'
 
+import appointmentRoutes from '../src/appointment/appointment.routes.js'
+
 class Server{
-    
+
     constructor(){
         this.app = express()
         this.port = process.env.PORT
+        this.appointmentPath = '/Thrive-together/v1/appointment'
 
         this.middlewares()
         this.conectarDB()
@@ -30,6 +33,7 @@ class Server{
     }
 
     routes(){
+        this.app.use(this.appointmentPath, appointmentRoutes)
     }
 
     listen(){
