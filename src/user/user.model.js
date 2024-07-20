@@ -3,37 +3,55 @@ import { Schema, model } from "mongoose";
 const UserSchema = Schema({
 
     name: {
+
         type: String,
-        require: [true, 'Name is neccessary']
+        required: [true, 'Name is necessary']
     },
     username: {
+
         type: String,
-        require: [true, 'Username is neccesary'],
+        required: [true, 'Username is necessary'],
         unique: true
     },
     email: {
+
         type: String,
-        require: [true, 'Email is neccesary'],
+        required: [true, 'Email is necessary'],
         unique: true
     },
     password: {
+
         type: String,
-        require: [true, 'Password is neccessary']
+        required: [true, 'Password is necessary']
     },
-    description:{
+    description: {
+
         type: String,
         default: "None"
     },
-    photo:{
+    photo: {
+
         type: String,
         default: "None"
+    },
+    progress: {
+
+        type: String,
+        default: "acceptance"
+    },
+    vices: {
+
+        type: String,
+        default: []
     },
     role: {
+
         type: String,
         enum: ["USER_ROLE", "SUPPORTER_ROLE", "ADMIN_ROLE"],
         default: "USER_ROLE"
     },
     status: {
+
         type: Boolean,
         default: true
     }

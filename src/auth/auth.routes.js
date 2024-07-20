@@ -7,10 +7,9 @@ import { validarCampos } from '../middlewares/validate-fields.js';
 const router = Router();
 
 router.post(
-
+    
     '/register',
     [
-
         check('name', 'The name cannot be empty').not().isEmpty(),
         check('username', 'The username cannot be empty').not().isEmpty(),
         check('username').custom(existUsername),
@@ -26,7 +25,6 @@ router.post(
 
     '/login',
     [
-        
         check('email', 'The email must be a valid email').isEmail(),
         check('password', 'The password cannot be empty').not().isEmpty(),
         validarCampos
