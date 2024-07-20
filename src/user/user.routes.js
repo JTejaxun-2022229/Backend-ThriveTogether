@@ -45,8 +45,7 @@ router.delete(
     
     '/profile',
     [
-        validateJWT,
-        validarCampos
+        validateJWT
     ],
     deleteUser
 );
