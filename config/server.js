@@ -14,7 +14,7 @@ class Server{
         this.app = express()
         this.port = process.env.PORT
 
-        this.forumPath = './trive/v1/forum'
+        this.forumPath = '/trive/v1/forum'
 
         this.middlewares()
         this.conectarDB()
