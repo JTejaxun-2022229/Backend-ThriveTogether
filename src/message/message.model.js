@@ -4,24 +4,34 @@ const MessageSchema = new Schema({
     receptor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: [true, "Enter a valid idUser"]
+        required: [true, "Enter a valid idUser of receptor"]
     },
     emisor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: [true, "Enter a valid idUser"]
+        required: [true, "Enter a valid idUser of emisor"]
     },
     content: {
         type: String,
         required: true
     },
     status: {
-        type: Boolean,
-        default: true
+        type: String,
+        enum: ['sent', 'delivered', 'read'],
+        default: 'sent'
     },
     SendAt: {
         type: Date,
         default: Date.now
+    },
+    chatId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chat',
+        required: [true, "Enter a valid chatId"]
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -31,4 +41,4 @@ MessageSchema.methods.toJSON = function () {
     return message;
 };
 
-export const Message = mongoose.model('Message', MessageSchema);
+export default mongoose.model('Message', MessageSchema);

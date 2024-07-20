@@ -19,4 +19,4 @@ ChatSchema.methods.toJSON = function () {
     return chat;
 };
 
-export const Chat = mongoose.model('Chat', ChatSchema);
+export default mongoose.model('Chat', ChatSchema);

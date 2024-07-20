@@ -1,9 +1,12 @@
 import { response, request } from "express";
 import Message from "./message.model.js";
+import moment from "moment";
+
+const limiteTiempo = 2;
 
 export const postMessage = async (req, res) => {
-    const { receptor, emisor, content } = req.body;
-    const message = new Message({ receptor, emisor, content });
+    const { receptor, emisor, content, chatId } = req.body;
+    const message = new Message({ receptor, emisor, content, chatId });
 
     try {
         await message.save();
@@ -22,7 +25,7 @@ export const postMessage = async (req, res) => {
 
 export const getMessages = async (req = request, res = response) => {
     const { start, end } = req.query;
-    const query = { status: true };
+    const query = { isDeleted: false };
 
     try {
         const [total, messages] = await Promise.all([
@@ -49,7 +52,7 @@ export const getMessageById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const message = await Message.findOne({ _id: id })
+        const message = await Message.findOne({ _id: id, isDeleted: false })
             .populate('receptor emisor');
 
         res.status(200).json({
@@ -68,6 +71,24 @@ export const putMessage = async (req, res = response) => {
     const { ...resto } = req.body;
 
     try {
+        const message = await Message.findById(id);
+
+        if (!message) {
+            return res.status(404).json({
+                error: 'Message not found'
+            });
+        }
+
+        const now = moment();
+        const sendAt = moment(message.SendAt);
+        const diffMinutes = now.diff(sendAt, 'minutes');
+
+        if (diffMinutes > limiteTiempo) {
+            return res.status(403).json({
+                error: 'Message can no longer be edited'
+            });
+        }
+
         const updatedMessage = await Message.findByIdAndUpdate(id, resto, { new: true })
             .populate('receptor emisor');
 
@@ -87,7 +108,26 @@ export const deleteMessage = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const message = await Message.findByIdAndUpdate(id, { status: false });
+        const message = await Message.findById(id);
+
+        if (!message) {
+            return res.status(404).json({
+                error: 'Message not found'
+            });
+        }
+
+        const now = moment();
+        const sendAt = moment(message.SendAt);
+        const diffMinutes = now.diff(sendAt, 'minutes');
+
+        if (diffMinutes > limiteTiempo) {
+            return res.status(403).json({
+                error: 'Message can no longer be deleted'
+            });
+        }
+
+        message.isDeleted = true;
+        await message.save();
 
         res.status(200).json({
             msg: 'Message successfully removed',
@@ -100,4 +140,3 @@ export const deleteMessage = async (req, res) => {
         });
     }
 };
-
