@@ -15,7 +15,7 @@ const MessageSchema = new Schema({
         type: String,
         required: true
     },
-    status: { 
+    status: { //Estado para ver despues si ya se envio
         type: String,
         enum: ['sent', 'delivered', 'read'],
         default: 'sent'
