@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { check } from 'express-validator'
 import { createForum, postMessage, deleteForum, deleteComment, getForums, getComentaryById, updateForum } from './forum.controller.js'
-import { existeForo } from "../helpers/db-validators.js";
-import { validarCampos } from "../middlewares/validar-campos.js";
+import { existForum } from "../helpers/db-validators.js";
+import { validarCampos } from "../middlewares/validate-fields.js";
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.post(
         
         check('title','The title indicates how the forum works.').not().isEmpty(),
         check('type','The type indicates what the type of problem is.').not().isEmpty(),    
-        check('title').custom(existeForo),
+        check('title').custom(existForum),
         validarCampos
     ], createForum
 )
@@ -42,7 +42,7 @@ router.put('/:forumId',
     [
         check('title', 'The title is required').not().isEmpty(),
         check('type', 'The type is required').not().isEmpty(),
-        check('title').custom(existeForo),
+        check('title').custom(existForum),
         validarCampos,
     ],
     updateForum
