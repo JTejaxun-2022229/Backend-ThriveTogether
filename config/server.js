@@ -7,6 +7,7 @@ import morgan from 'morgan'
 import { dbConnection } from './mongo.js'
 import authRoutes from '../src/auth/auth.routes.js'
 import userRoutes from '../src/user/user.routes.js'
+import noteRoutes from '../src/note/note.routes.js'
 
 class Server {
 
@@ -16,6 +17,7 @@ class Server {
 
         this.authPath = '/thriveTogether/v1/auth';
         this.userPath = '/thriveTogether/v1/user';
+        this.notePath = '/thriveTogether/v1/note'
 
         this.middlewares()
         this.conectarDB()
@@ -38,6 +40,7 @@ class Server {
 
         this.app.use(this.authPath, authRoutes);
         this.app.use(this.userPath, userRoutes);
+        this.app.use(this.notePath, noteRoutes);
     }
 
     listen() {
