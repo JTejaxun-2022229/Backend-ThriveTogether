@@ -40,8 +40,8 @@ const UserSchema = Schema({
         default: "acceptance"
     },
     vices: {
-
-        type: String,
+        
+        type: [String],
         default: []
     },
     role: {

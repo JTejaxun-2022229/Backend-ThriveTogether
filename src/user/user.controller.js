@@ -5,7 +5,7 @@ export const getUsers = async (req = request, res = response) => {
 
     try {
 
-        const users = await User.find({}, 'name username role');
+        const users = await User.find({}, 'name username role status');
         res.status(200).json({ users });
     } catch (e) {
 
@@ -59,7 +59,7 @@ export const deleteUser = async (req = request, res = response) => {
         await userData.save();
         res.status(200).json({ msg: 'User account deactivated' });
     } catch (e) {
-        
+
         res.status(500).json({ msg: 'Contact the administrator' });
     }
 };
