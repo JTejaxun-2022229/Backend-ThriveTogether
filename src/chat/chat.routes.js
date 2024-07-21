@@ -8,12 +8,14 @@ import {
     deleteChat,
 } from "./chat.controller.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
+import { validateJWT, validateRole } from '../middlewares/validate-jwt.js'; 
 
 const router = Router();
 
 router.post(
     "/",
     [
+        validateJWT,
         check("owner", "The owner is required").not().isEmpty(),
         check("owner", "This is not a valid ID for owner").isMongoId(),
         check("receptor", "The receptor is required").not().isEmpty(),
@@ -25,12 +27,14 @@ router.post(
 
 router.get(
     "/",
+    validateJWT,
     getChats
 );
 
 router.get(
     "/:id",
     [
+        validateJWT,
         check("id", "This is not a valid ID").isMongoId(),
         validarCampos,
     ],
@@ -40,6 +44,7 @@ router.get(
 router.put(
     "/:id",
     [
+        validateJWT,
         check("id", "This is not a valid ID").isMongoId(),
         validarCampos,
     ],
@@ -49,6 +54,7 @@ router.put(
 router.delete(
     "/:id",
     [
+        validateJWT,
         check("id", "This is not a valid ID").isMongoId(),
         validarCampos,
     ],

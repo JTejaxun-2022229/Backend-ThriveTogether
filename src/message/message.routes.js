@@ -8,12 +8,14 @@ import {
     deleteMessage
 } from "./message.controller.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
+import { validateJWT, validateRole } from '../middlewares/validate-jwt.js';
 
 const router = Router();
 
 router.post(
     "/",
     [
+        validateJWT,
         check("receptor", "The receptor is required").not().isEmpty(),
         check("receptor", "This is not a valid ID for receptor").isMongoId(),
         check("emisor", "The emisor is required").not().isEmpty(),
@@ -43,6 +45,7 @@ router.get(
 router.put(
     "/:id",
     [
+        validateJWT,
         check("id", "This is not a valid ID").isMongoId(),
         validarCampos,
     ],
@@ -52,6 +55,7 @@ router.put(
 router.delete(
     "/:id",
     [
+        validateJWT,
         check("id", "This is not a valid ID").isMongoId(),
         validarCampos,
     ],
