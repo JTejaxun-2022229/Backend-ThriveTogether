@@ -15,16 +15,16 @@ const MessageSchema = new Schema({
         type: String,
         required: true
     },
-    status: {
+    status: { 
         type: String,
         enum: ['sent', 'delivered', 'read'],
         default: 'sent'
     },
-    SendAt: {
+    SendAt: { //Fecha de envio del mensaje
         type: Date,
         default: Date.now
     },
-    chatId: {
+    chatId: { //Es para vincular cada mensaje a un chat
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Chat',
         required: [true, "Enter a valid chatId"]

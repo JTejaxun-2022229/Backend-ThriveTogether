@@ -10,7 +10,11 @@ const ChatSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: [true, "Enter a valid idUser"]
-    }
+    },
+    status: { 
+        type: Boolean,
+        default: 'true'
+    },
 });
 
 ChatSchema.methods.toJSON = function () {
