@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from 'express-validator'
-import { createForum, postMessage, deleteForum, deleteComment, getForums, getComentaryById, updateForum } from './forum.controller.js'
+import { createForum, postMessage, deleteForum, deleteComment, getForums, getComentaryById, updateForum,getForumsById } from './forum.controller.js'
 import { existForum } from "../helpers/db-validators.js";
 import { validarCampos } from "../middlewares/validar-campos.js";
 import { validateJWT } from '../middlewares/validate-jwt.js';
@@ -21,6 +21,10 @@ router.post(
 
 router.get(
     '/',[validateJWT],getForums
+)
+
+router.get(
+    '/:forumId',[],getForumsById
 )
 
 router.get(

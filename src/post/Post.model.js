@@ -14,10 +14,15 @@ const PostSchema = Schema({
         ref: 'User',
         required: true
     },
+    photo: {
+        type: String,
+        default: 'None'
+    },
     status: {
         type: Boolean,
         default: true
     }
+    
 });
 
 export default model('Post', PostSchema);

@@ -57,6 +57,31 @@ export const getForums = async (req, res) => {
     }
 };
 
+export const getForumsById = async ( req, res ) => {
+
+    const { forumId } = req.params;
+
+    try{
+
+        const forum = await Forum.findById(forumId);
+
+        if (!forum) {
+            return res.status(404).json({ msg: 'Forum not found' });
+        }
+
+        res.status(200).json({
+            forum
+        });
+
+    }catch(error){
+
+        res.status(500).json({
+            msg: 'Error retrieving forum', error
+        })
+    }
+
+}
+
 export const getComentaryById = async ( req, res ) => {
 
     const { forumId, commentId } = req.params;

@@ -33,7 +33,8 @@ export const dbConnection = async () => {
         })
 
         await mongoose.connect(process.env.URI_MONGO, {
-
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
             serverSelectionTimeoutMS: 8000,
             maxPoolSize: 100
         });
