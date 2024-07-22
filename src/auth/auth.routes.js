@@ -15,7 +15,7 @@ router.post(
         check('username').custom(existUsername),
         check('email', 'The email must be a valid email').isEmail(),
         check('email').custom(existeEmail),
-        check('password', 'The password cannot be empty').not().isEmpty().isLength({ min: 8 }),
+        check('password', 'The password cannot be empty or min 8 characters').not().isEmpty().isLength({ min: 8 }),
         validarCampos
     ],
     registerUser

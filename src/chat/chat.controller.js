@@ -1,5 +1,6 @@
 import { response, request } from "express";
 import Chat from "./chat.model.js";
+import User from "../user/user.model.js"
 
 export const postChat = async (req, res) => {
     const { owner, receptor } = req.body;
@@ -7,9 +8,13 @@ export const postChat = async (req, res) => {
 
     try {
         await chat.save();
+        const ownerUser = await User.findById(owner);
+        const receptorUser = await User.findById(receptor);
 
         res.status(201).json({
-            chat
+            chat,
+            ownerUser: { username: ownerUser.username, secret: ownerUser.secret },
+            receptorUser: { username: receptorUser.username, secret: receptorUser.secret }
         });
 
     } catch (error) {
