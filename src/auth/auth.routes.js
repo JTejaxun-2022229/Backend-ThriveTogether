@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 import { registerUser, login } from './auth.controller.js';
-import { existUsername, existeEmail, isStatusValid } from '../helpers/db-validators.js';
+import { existUsername, existeEmail } from '../helpers/db-validators.js';
 import { validarCampos } from '../middlewares/validar-campos.js';
 
 const router = Router();
@@ -16,18 +16,17 @@ router.post(
         check('email', 'The email must be a valid email').isEmail(),
         check('email').custom(existeEmail),
         check('password', 'The password cannot be empty').not().isEmpty().isLength({ min: 8 }),
-        validarCampos
+        validarCampos,
     ],
     registerUser
 );
 
 router.post(
-
     '/login',
     [
         check('email', 'The email must be a valid email').isEmail(),
         check('password', 'The password cannot be empty').not().isEmpty(),
-        validarCampos
+        validarCampos,
     ],
     login
 );

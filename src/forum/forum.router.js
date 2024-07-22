@@ -2,7 +2,7 @@ import { Router } from "express";
 import { check } from 'express-validator'
 import { createForum, postMessage, deleteForum, deleteComment, getForums, getComentaryById, updateForum } from './forum.controller.js'
 import { existForum } from "../helpers/db-validators.js";
-import { validarCampos } from "../middlewares/validate-fields.js";
+import { validarCampos } from "../middlewares/validar-campos.js";
 import { validateJWT } from '../middlewares/validate-jwt.js'
 
 const router = Router();
@@ -59,7 +59,7 @@ router.delete(
 
 router.delete(
     '/:forumId/comments/:commentId',
-    [validateJWT]
+    [validateJWT],
     deleteComment
 );
 
