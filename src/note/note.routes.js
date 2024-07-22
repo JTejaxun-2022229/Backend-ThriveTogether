@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
-import { createNote, getAllNotes, getNotesByCreator, updateNote } from './note.controller.js';
+import { createNote, getAllNotes, getNotesByCreator, updateNote, deleteNote } from './note.controller.js';
 import { validateJWT, validateRole } from '../middlewares/validate-jwt.js';
 import { existNoteById, findUsername } from '../helpers/db-validators.js';
 import { validarCampos } from '../middlewares/validar-campos.js';
@@ -42,7 +42,7 @@ router.get(
 );
 
 router.put(
-    
+
     '/update/:id',
     [
         validateJWT,
@@ -52,6 +52,17 @@ router.put(
         validarCampos
     ],
     updateNote
+);
+
+router.delete(
+
+    '/delete/:id',
+    [
+        validateJWT,
+        validateRole('ADMIN_ROLE', 'SUPPORTER_ROLE'), // Assuming only admins can delete notes
+        validarCampos
+    ],
+    deleteNote
 );
 
 export default router;

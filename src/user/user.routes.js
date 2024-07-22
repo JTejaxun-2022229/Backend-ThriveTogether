@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 import { validateJWT, validateRole, compareUser } from '../middlewares/validate-jwt.js';
-import { getUsers, getUserById, updateUser, deleteUser } from './user.controller.js';
+import { getUsers, getUserById, updateUser, deleteUser, updateUserProgressById, getUsersByRoleSupporter, getUsersByRoleUser } from './user.controller.js';
 import { validarCampos } from '../middlewares/validar-campos.js';
 
 const router = Router();
@@ -27,6 +27,27 @@ router.get(
     getUserById
 );
 
+router.get(
+
+    '/patients',
+    [
+        validateJWT,
+        validateRole('ADMIN_ROLE', 'SUPPORTER_ROLE'),
+        validarCampos
+    ],
+    getUsersByRoleUser
+);
+
+router.get(
+
+    '/profesionalSupport',
+    [
+        validateJWT,
+        validarCampos
+    ],
+    getUsersByRoleSupporter
+);
+
 router.put(
 
     '/profile',
@@ -41,8 +62,19 @@ router.put(
     updateUser
 );
 
+router.patch(
+
+    '/patient/:id',
+    [
+        validateJWT,
+        validateRole('ADMIN_ROLE', 'SUPPORTER_ROLE'),
+        check('progress', 'Progress is required').not().isEmpty(),
+        validarCampos
+    ],
+    updateUserProgressById
+);
+
 router.delete(
-    
     '/profile',
     [
         validateJWT

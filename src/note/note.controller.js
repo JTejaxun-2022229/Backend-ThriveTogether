@@ -54,7 +54,7 @@ export const getAllNotes = async (req, res) => {
 };
 
 
-export const getNotesByCreator = async (req , res) => {
+export const getNotesByCreator = async (req, res) => {
 
     const { id } = req.user;
 
@@ -71,7 +71,7 @@ export const getNotesByCreator = async (req , res) => {
 };
 
 
-export const updateNote = async (req = request, res = response) => {
+export const updateNote = async (req , res ) => {
 
     const { id } = req.params;
     const { title, body } = req.body;
@@ -93,10 +93,31 @@ export const updateNote = async (req = request, res = response) => {
         res.json(note);
 
     } catch (e) {
-        
+
         console.log(e);
         res.status(500).json({
             msg: 'Server error'
         });
+    }
+};
+
+export const deleteNote = async (req = request, res = response) => {
+
+    const { id } = req.params;
+
+    try {
+
+        const note = await Note.findById(id);
+        if (!note || !note.status) {
+
+            return res.status(404).json({ msg: 'Note already deleted or not found' });
+        }
+
+        note.status = false;
+        await note.save();
+        res.status(200).json({ msg: 'Note status updated to false' });
+    } catch (e) {
+
+        res.status(500).json({ msg: 'Contact the administrator' });
     }
 };
