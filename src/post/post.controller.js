@@ -1,13 +1,23 @@
 import { request, response } from 'express';
 import Post from './Post.model.js';
 import User from '../user/user.model.js';
+import cloudinary from '../../config/cloudinary.js';
 
 export const createPost = async (req = request, res = response) => {
     const { title, description } = req.body;
     const { user } = req;
 
     try {
-        const post = new Post({ title, description, user: user.id });
+        let photoUrl = 'None';
+        
+        if (req.file) {
+            const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'post_photos',
+            });
+            photoUrl = uploadResponse.secure_url;
+        }
+
+        const post = new Post({ title, description, photo: photoUrl, user: user.id });
         await post.save();
 
         const userData = await User.findById(user.id).select('name');
@@ -23,7 +33,16 @@ export const updatePost = async (req = request, res = response) => {
     const { title, description } = req.body;
     
     try {
-        const post = await Post.findByIdAndUpdate(id, { title, description }, { new: true });
+        let updateData = { title, description };
+
+        if (req.file) {
+            const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'post_photos',
+            });
+            updateData.photo = uploadResponse.secure_url;
+        }
+
+        const post = await Post.findByIdAndUpdate(id, updateData, { new: true });
         res.status(200).json({ post });
     } catch (e) {
         res.status(500).json({ msg: 'Contact the administrator' });
