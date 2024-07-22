@@ -7,7 +7,7 @@ import morgan from 'morgan'
 import { dbConnection } from './mongo.js'
 import chatRoutes from '../src/chat/chat.routes.js';
 import messageRoutes from '../src/message/message.routes.js';
-import postRoutes from '../src/Post/post.routes.js'
+import postRoutes from '../src/post/post.routes.js'
 import appointmentRoutes from '../src/appointment/appointment.routes.js'
 import userRoutes from '../src/user/user.routes.js'
 import authRoutes from '../src/auth/auth.routes.js'
